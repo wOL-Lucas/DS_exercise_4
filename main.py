@@ -2,7 +2,7 @@ import numpy as np
 from utils import Input
 
 class NonOrderedList:
-    def __init__(self, max_length:int):
+    def __init__(self, max_length:int) -> None:
         self.__last_position__ = 0
         self.__elements__ = np.empty(max_length, dtype=int)
     
@@ -10,7 +10,7 @@ class NonOrderedList:
         if self.__last_position__ == len(self.__elements__):
             self.__RaiseFullListError()
 
-        if element in self.__elements__:
+        if self._is_duplicate(element):
             self.__RaiseDuplicateError()
 
         self.__elements__[self.__last_position__] = element
@@ -27,6 +27,14 @@ class NonOrderedList:
     def __str__(self):
         return str([item for item in self])
 
+    def _is_duplicate(self, element:int):
+        for index,item in enumerate(self.__elements__):
+            if item == element and index < self.__last_position__:
+                return True
+            
+        return False
+
+
     def __RaiseDuplicateError(self):
         raise Exception("Duplicate item error","The list does not accept duplicate items")
     
@@ -35,6 +43,7 @@ class NonOrderedList:
 
 max_length = 10
 nonOrderedList = NonOrderedList(max_length)
+
 for item in Input.get_list_items(max_length, dtype=int):
     nonOrderedList.push(item)
 
